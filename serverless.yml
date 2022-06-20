@@ -1,5 +1,5 @@
 ---
-service: serverless-react-boilerplate
+service: serverless-react-zemoga-challenge-ui
 frameworkVersion: "3"
 useDotenv: true
 variablesResolutionMode: 20210326
@@ -9,7 +9,8 @@ disabledDeprecations:
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ${opt:region, 'us-east-1'}
+  region: ${opt:region, 'us-east-2'}
+  profile: serverless-deploy
   stage: ${opt:stage, 'dev'}
   memorySize: 512
   timeout: 6
@@ -26,15 +27,7 @@ provider:
 
     APP_DIST_URL: ${self:custom.distBucketUrl.${self:provider.region}, self:custom.distBucketUrl.default}
     APP_PUBLIC_URL: ${self:custom.distBucketUrl.${self:provider.region}, self:custom.distBucketUrl.default}
-    APIGATEWAY_URL:
-      Fn::Join:
-        - ""
-        - - https://
-          - Ref: ApiGatewayRestApi
-          - .execute-api.
-          - Ref: AWS::Region
-          - .amazonaws.com/
-          - ${self:provider.stage}
+    APIGATEWAY_URL: ${env:APIGATEWAY_URL}
 
 plugins:
   - serverless-webpack
